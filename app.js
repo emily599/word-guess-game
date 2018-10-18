@@ -41,26 +41,43 @@ var wins = 0;                   // How many wins has the player racked up
 
 // When a key is pressed, the key is logged and shown on the page
 $("html").on("keydown", function (event) {
-    console.log(event);
-    $("#lettersGuessed").append(event.key);
+    console.log(event.key);
     guessedLetters.push(event.key);
+    keyPress(event.key);
 })
 
 
 // randomizes words in selectableWords array
 var randomWord = selectableWords[Math.floor(Math.random() * selectableWords.length)];
 
-// shows underscores of letters for random word
-for (i = 0; i < randomWord.length; i++) {
-    $("#word").append(" _ ");
-}
 
-apple
+// shows underscores of letters for random word
+var underscoreArray = [];
+for (i = 0; i < randomWord.length; i++) {
+    underscoreArray.push("_ ");
+}
+$("#word").html(underscoreArray);
+
+
+function removeElement(guessedLetters, i) {
+    for (i = 0; i < array.length - 1; i++) {
+        if (array[i]) === remove
+    }
+}
 
 // comparing selected key to chosen word
-for (i = 0; i < randomWord.length; i++) {
-    if (randomWord.charAt(i) = guessedLetters[i]);
+function keyPress(key) {
+    for (i = 0; i < randomWord.length; i++) {
+        if (randomWord.charAt(i) === key) {
+            console.log(key);
+            underscoreArray[i] = key;
+            $("#word").html(underscoreArray);
+
+        }
+    }
+    $("#lettersGuessed").html(guessedLetters);
 }
+
 
 
 
