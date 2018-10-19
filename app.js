@@ -51,8 +51,12 @@ $("#word").html(underscoreArray);
 function keyPress(key) {
     if (randomWord.includes(key)) {
         console.log(key);
-        var i = randomWord.indexOf(key);
-        underscoreArray[i] = key;
+        for (var i = 0; i < randomWord.length; i++) {
+            if (randomWord[i] === key) {
+                underscoreArray[i] = key;
+            }
+
+        }
     } else if (!incorrectlyGuessedLetters.includes(key)) {
         incorrectlyGuessedLetters.push(key);
         maxTries--;
@@ -72,6 +76,8 @@ function isEligible(maxTries) {
         return false;
     }
 }
+
+
 
 
 
