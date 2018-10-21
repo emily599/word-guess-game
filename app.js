@@ -21,23 +21,12 @@ var randomWord;                  // Index of the current word in the array
 var gameStarted = false;        // Flag to tell if the game has started
 var hasFinished = false;        // Flag for 'press any key to try again'     
 var wins = 0;                   // How many wins has the player racked up
-
-
-// When a key is pressed, the key is logged and shown on the page (if above 0)
-$("html").on("keydown", function (event) {
-    console.log(event.key);
-    if (isEligible(maxTries)) {
-        keyPress(event.key);
-    } else if (!isEligible(maxTries)) {
-        alert("You lost");
-        $("lettersGuessed").empty();
-    }
-
-})
-
+var losses = 0;
+var correctLetters = [];
 
 // randomizes words in selectableWords array
-var randomWord = selectableWords[Math.floor(Math.random() * selectableWords.length)];
+//var randomWord = selectableWords[Math.floor(Math.random() * selectableWords.length)];
+var randomWord = 'goron';
 
 
 // shows underscores of letters for random word
@@ -47,29 +36,72 @@ for (i = 0; i < randomWord.length; i++) {
 }
 $("#word").html(underscoreArray);
 
+
+
+// When a key is pressed, the key is logged and shown on the page (if above 0)
+$("html").on("keydown", function (event) {
+    console.log(event.key);
+    if (isEligible(maxTries)) {
+        keyPress(event.key);
+
+        if ((underscoreArray.join("")) === randomWord) {
+            wins++;
+            $("#wins").html(wins);
+            setTimeout(function () { alert("You won"); clear(); }, 500);
+
+        }
+    } else if (!isEligible(maxTries)) {
+        alert("You lost");
+        clear();
+        losses++;
+        $("#losses").html(losses);
+    }
+
+
+})
+
+function clear() {
+    $("#lettersGuessed").empty();
+    correctLetters = [];
+    incorrectlyGuessedLetters = [];
+    guessedLetters = [];
+    maxTries = 10;
+    $("#guessesLeft").html(maxTries);
+    randomWord = selectableWords[Math.floor(Math.random() * selectableWords.length)];
+    underscoreArray = [];
+    for (i = 0; i < randomWord.length; i++) {
+        underscoreArray.push("_ ");
+    }
+    $("#word").html(underscoreArray);
+
+}
+
 // comparing selected key to chosen word
 function keyPress(key) {
     if (randomWord.includes(key)) {
         console.log(key);
         for (var i = 0; i < randomWord.length; i++) {
             if (randomWord[i] === key) {
+                console.log(key);
                 underscoreArray[i] = key;
+                if (!correctLetters.includes(key)) {
+                    correctLetters.push(key);
+                }
             }
-
         }
     } else if (!incorrectlyGuessedLetters.includes(key)) {
         incorrectlyGuessedLetters.push(key);
         maxTries--;
     }
-
     $("#word").html(underscoreArray);
     $("#lettersGuessed").html(incorrectlyGuessedLetters);
     $("#guessesLeft").html(maxTries);
+
 }
 
 // if number of guesses hits 0, use may no longer guess letters
 function isEligible(maxTries) {
-    if (maxTries > 0) {
+    if (maxTries > 1) {
         return true;
     }
     else if (maxTries <= 0) {
