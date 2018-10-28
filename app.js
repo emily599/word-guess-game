@@ -1,17 +1,40 @@
 // Word List
-var selectableWords = [
-    "zelda",
-    "goron",
-    "hyrule",
-    "saria",
-    "link",
-    "ganondorf",
-    "zora",
-    "kakoriko",
-    "midna",
-    "mipha",
-    "gerudo",
-];
+var selectableWords;
+var randomWord;
+var underscoreArray;
+
+
+var zeldaJSON = fetch("https://raw.githubusercontent.com/dariusk/corpora/master/data/games/zelda.json")
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        selectableWords = data["games"]["The Legend of Zelda"]["characters"];
+        randomWord = selectableWords[Math.floor(Math.random() * selectableWords.length)];
+        // shows underscores of letters for random word
+        underscoreArray = []; //correctly guessed letters
+        for (i = 0; i < randomWord.length; i++) {
+            underscoreArray.push("_ ");
+        }
+        $("#word").html(underscoreArray);
+    })
+    .catch(error => {
+        console.log(error);
+        selectableWords = [
+            "zelda",
+            "goron",
+            "hyrule",
+            "saria",
+            "link",
+            "ganondorf",
+            "zora",
+            "kakoriko",
+            "midna",
+            "mipha",
+            "gerudo",
+        ];
+    });
 var incorrectlyGuessedLetters = []; //incorrect guesses
 var maxTries = 10;            // Maximum number of tries player has
 var guessedLetters = [];        // Stores the letters the user guessed
@@ -25,16 +48,12 @@ var losses = 0;
 var correctLetters = [];
 
 // randomizes words in selectableWords array
-//var randomWord = selectableWords[Math.floor(Math.random() * selectableWords.length)];
-var randomWord = 'goron';
 
 
-// shows underscores of letters for random word
-var underscoreArray = []; //correctly guessed letters
-for (i = 0; i < randomWord.length; i++) {
-    underscoreArray.push("_ ");
-}
-$("#word").html(underscoreArray);
+
+
+
+
 
 
 
